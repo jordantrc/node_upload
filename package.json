@@ -6,6 +6,7 @@
   "dependencies": {
     "basic-auth": "^2.0.1",
     "formidable": "^1.2.2",
+    "time-stamp": "^2.2.0",
     "tsscmp": "^1.0.6"
   },
   "devDependencies": {},
