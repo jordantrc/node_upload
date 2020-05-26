@@ -3,25 +3,67 @@
 var auth = require('basic-auth');
 var compare = require('tsscmp');
 var http = require('http');
+var https = require('https');
 var formidable = require('formidable');
 var fs = require('fs');
 var timestamp = require('time-stamp');
 
+// defaults
+useTLS = false;
+
+/*
+for(i=0; i<process.argv.length; i++) {
+    console.log(`${i} - ${process.argv[i]}`);
+}
+*/
+
 // parse command line arguments
 if (process.argv.length < 3) {
-    console.log(`Usage: node ${process.argv[1]} <upload directory>`);
+    console.log(`Usage: node ${process.argv[1]} [options] <upload directory>`);
+    console.log("    Valid options:");
+    console.log("        -s:  server uses TLS, requires local cert.pem and key.pem files")
     process.exit();
 } else {
-    uploadFolder = process.argv[2];
+    if (process.argv.length > 3) {
+        // options were specified
+        for(i = 2; i<(process.argv.length - 1); i++) {
+            switch (process.argv[i]) {
+                case "-s":
+                    useTLS = true;
+                    console.log("[*] using TLS");
+                    break;
+                default:
+                    console.log(`Unknown option [${process.argv[i]}`);
+                    process.exit();
+            }
+        }
+    }
+    uploadFolder = process.argv[-1];
 }
 
 // generate credentials
 username = Math.random().toString(36).substring(2, 15);
 password = Math.random().toString(36).substring(2, 15);
-console.log(`Username: ${username}`);
-console.log(`Password: ${password}`);
+console.log(`[*] Username: ${username}`);
+console.log(`[*] Password: ${password}`);
 
-var server = http.createServer(function (req, res) {
+// set options for https
+options = {};
+if (useTLS) {
+    options = {
+        key: fs.readFileSync('key.pem'),
+        cert: fs.readFileSync('cert.pem')
+    };
+    tcpPort = 8443;
+    serverModule = https;
+} else {
+    tcpPort = 8080;
+    serverModule = http;
+}
+
+
+// create server object
+var server = serverModule.createServer(options, function (req, res) {
     var credentials = auth(req);
     // check credentials
     if (!credentials || !checkauth(credentials.name, credentials.pass)) {
@@ -72,4 +114,5 @@ function log(req, msg) {
 }
 
 // start server loop
-server.listen(8080);
+console.log(`[*] Server listening on ${tcpPort}`)
+server.listen(tcpPort);
