@@ -2,7 +2,7 @@
   "name": "node_http_server",
   "version": "1.0.0",
   "description": "simple http server which accepts a file upload",
-  "main": "http_server.js",
+  "main": "upload_server.js",
   "dependencies": {
     "formidable": "^1.2.2"
   },
