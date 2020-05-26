@@ -4,7 +4,9 @@
   "description": "simple http server which accepts a file upload",
   "main": "upload_server.js",
   "dependencies": {
-    "formidable": "^1.2.2"
+    "basic-auth": "^2.0.1",
+    "formidable": "^1.2.2",
+    "tsscmp": "^1.0.6"
   },
   "devDependencies": {},
   "scripts": {
