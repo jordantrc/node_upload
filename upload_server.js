@@ -77,7 +77,7 @@ var server = serverModule.createServer(options, function (req, res) {
             var form = new formidable.IncomingForm();
             form.parse(req, function (err, fields, files) {
                 var oldpath = files.filetoupload.path;
-                var newpath = uploadFolder + files.filetoupload.name;
+                var newpath = uploadFolder + "/" + files.filetoupload.name;
                 fs.rename(oldpath, newpath, function (err) {
                     if (err) throw err;
                 })
