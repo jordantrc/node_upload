@@ -39,6 +39,7 @@ if (process.argv.length < 3) {
         }
     }
     uploadFolder = process.argv[-1];
+    console.log("[*] files will be stored in " + uploadFolder);
 }
 
 // generate credentials
