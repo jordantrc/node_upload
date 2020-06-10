@@ -31,6 +31,6 @@ $username = username
 $password = password
 $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username,$password)))
 $contentType = "multipart/form-data"
-$body = @{"filetoupload" = get-content($filePath) -Rawb}
+$body = @{"filetoupload" = get-content($filePath) -Raw}
 Invoke-RestMethod -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Uri $uri -Method POST -ContentType $contentType -Body $body
 ```
